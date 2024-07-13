@@ -18,7 +18,7 @@ services:
     build: 
       context: controll_plane
       args: 
-       - ARCH=${ARCH-}
+       - ARCH=${ARCH}
     environment:
       - LOCAL_STACK_BASE_URL=http://localaws:4566
       - LOCALSTACK_HOSTNAME=localaws
