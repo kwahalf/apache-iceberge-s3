@@ -46,3 +46,32 @@ start-project: stop-project
 .PHONY: stop-project
 stop-project:
 	docker compose -f "docker/docker-compose.yml" down
+
+
+###############################################################################
+### Install dev dependecies
+###############################################################################
+
+.PHONY: install-dev
+install-dev:
+	docker exec -it -w /apache-iceberge-s3/tools docker-app-1 pip install  -e .
+
+
+
+.PHONY: cleanup-tf-states
+cleanup-tf-states:
+	find . -wholename "**/.terraform" -exec rm -rf "{}" \; \
+	&& find . -wholename "*.terraform.lock.hcl" -exec rm -rf "{}" \; \
+	&& find . -wholename "*.plan" -exec rm -rf "{}" \;  \
+	&& find . -wholename "*.tfstate" -exec rm -rf "{}" \; \
+	&& find . -wholename "*.tfstate.backup" -exec rm -rf "{}" \;
+
+
+
+###############################################################################
+### setup iceberge tables and other assets s3
+###############################################################################
+
+
+
+
