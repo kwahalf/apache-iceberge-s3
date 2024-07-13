@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  localaws:
+    image: localstack/localstack
+    ports:
+      - "0.0.0.0:4566:4566"            # LocalStack Gateway
+      - "0.0.0.0:4510-4559:4510-4559"  # external services port range
+    environment:
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCALSTACK_AUTH_TOKEN=$LOCALSTACK_AUTH_TOKEN
+    volumes:
+      - ./volume:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+  
+  app:
+    build: 
+      context: controll_plane
+      args: 
+       - ARCH=${ARCH-}
+    environment:
+      - LOCAL_STACK_BASE_URL=http://localaws:4566
+      - LOCALSTACK_HOSTNAME=localaws
+    command: tail -f /dev/null
+    volumes:
+      - "..:/apache-iceberge-s3"
